@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import localFont from "next/font/local";
 import styles from "@/styles/Home.module.css";
+import { useEffect, useRef, useCallback } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,6 +16,44 @@ const geistMono = localFont({
 });
 
 export default function Home() {
+  const workerRef = useRef();
+
+  useEffect(() => {
+    const logHtml = function (cssClass, ...args) {
+      const ln = document.createElement('div');
+      if (cssClass) ln.classList.add(cssClass);
+      ln.append(document.createTextNode(args.join(' ')));
+      document.getElementById('sqldump').append(ln);
+    };
+    const worker = new Worker('worker.js?sqlite3.dir=jswasm');
+
+    workerRef.current = worker;
+    workerRef.current.onmessage = function ({ data }) {
+        switch (data.type) {
+          case 'log':
+            logHtml(data.payload.cssClass, ...data.payload.args);
+            break;
+          default:
+            logHtml('error', 'Unhandled message:', data.type);
+        }
+      };
+
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, []);
+
+  const handleWork = useCallback(async () => {
+    workerRef.current?.postMessage(100000);
+  }, []);
+
+
+
+
+
+
+
+
   return (
     <>
       <Head>
@@ -27,14 +66,10 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.main}>
-          <Image
-            className={styles.logo}
-            src="https://nextjs.org/icons/next.svg"
-            alt="Next.js logo"
-            width={180}
-            height={38}
-            priority
-          />
+        
+          <p>Do work in a WebWorker!</p>
+          <button onClick={handleWork}>Send msg to worker</button>
+          <div id="sqldump"></div>
           <ol>
             <li>
               Get started by editing <code>pages/index.js</code>.
@@ -49,13 +84,6 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image
-                className={styles.logo}
-                src="https://nextjs.org/icons/vercel.svg"
-                alt="Vercel logomark"
-                width={20}
-                height={20}
-              />
               Deploy now
             </a>
             <a
@@ -67,6 +95,9 @@ export default function Home() {
               Read our docs
             </a>
           </div>
+
+
+
         </main>
         <footer className={styles.footer}>
           <a
@@ -74,13 +105,6 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/file.svg"
-              alt="File icon"
-              width={16}
-              height={16}
-            />
             Learn
           </a>
           <a
@@ -88,13 +112,6 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/window.svg"
-              alt="Window icon"
-              width={16}
-              height={16}
-            />
             Examples
           </a>
           <a
@@ -102,13 +119,6 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              aria-hidden
-              src="https://nextjs.org/icons/globe.svg"
-              alt="Globe icon"
-              width={16}
-              height={16}
-            />
             Go to nextjs.org →
           </a>
         </footer>
