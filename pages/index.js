@@ -35,8 +35,9 @@ export default function Home() {
       document.getElementById('sqldump').append(ln);
     };
     
-    const worker = new Worker('worker.js?sqlite3.dir=jswasm',  { credentials: "include" });
+    const worker = new Worker('worker.js?sqlite3.dir=jswasm',  { credentials: "omit" });
     //const worker = new Worker(new URL("worker.js?sqlite3.dir=jswasm", import.meta.url));
+    //const worker = new Worker('worker.js?sqlite3.dir=jswasm');
 
     /*
     const workerUrl = new URL(
