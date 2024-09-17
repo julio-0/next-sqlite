@@ -8,7 +8,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cross-Origin-Embedder-Policy',
-            value: 'require-corp',
+            value: 'credentialless',
           },
           {
             key: 'Cross-Origin-Opener-Policy',
@@ -18,10 +18,6 @@ const nextConfig = {
             key: 'Access-Control-Allow-Origin',
             value: '*',
           },       
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'POST, GET, OPTIONS',
-          },                 
          ],
       },
     ]
