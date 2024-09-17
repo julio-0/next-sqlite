@@ -19,6 +19,15 @@ export default function Home() {
   const workerRef = useRef();
 
   useEffect(() => {
+    const documentCE = document.createElement;
+    document.createElement = (...args) => {
+      const el = documentCE.apply(document, args);
+      if (args[0] === 'iframe') {
+        el.setAttribute('credentialless', '');
+      }
+      return el;
+    };
+
     const logHtml = function (cssClass, ...args) {
       const ln = document.createElement('div');
       if (cssClass) ln.classList.add(cssClass);
