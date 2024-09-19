@@ -1,3 +1,7 @@
+const myHeaders = new Headers(); // Currently empty
+myHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+
+
 console.log('Running demo from Worker thread.');
 
 const logHtml = function (cssClass, ...args) {
