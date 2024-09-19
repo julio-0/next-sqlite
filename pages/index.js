@@ -36,7 +36,8 @@ export default function Home() {
     };
     
     const worker = new Worker('worker.js?sqlite3.dir=jswasm', {
-      credentials: "same-origin" });
+      crossorigin: "anonymous" });
+            
 
     /*
     console.log( "Adding sql-wasm.js script tag")
