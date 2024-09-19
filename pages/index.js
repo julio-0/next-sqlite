@@ -36,6 +36,22 @@ export default function Home() {
     };
     
     const worker = new Worker('worker.js?sqlite3.dir=jswasm',  { credentials: "omit" });
+
+    /*
+    console.log( "Adding sql-wasm.js script tag")
+    const s = document.createElement( 'script' );
+    s.setAttribute( 'src', '/worker.js?sqlite3.dir=jswasm' );
+    s.setAttribute( 'crossorigin', 'anonymous' );
+    document.body.appendChild( s );
+  
+    window.loadSQL = async () => {
+        console.log( "loadSQL function called" )
+  
+        return await initSqlJs({
+            locateFile: file => `/${file}`
+          })
+    }
+    */
     //const worker = new Worker(new URL("worker.js?sqlite3.dir=jswasm", import.meta.url));
     //const worker = new Worker('worker.js?sqlite3.dir=jswasm');
 
