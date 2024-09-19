@@ -35,7 +35,8 @@ export default function Home() {
       document.getElementById('sqldump').append(ln);
     };
     
-    const worker = new Worker('worker.js?sqlite3.dir=jswasm',  { credentials: "omit" });
+    const worker = new Worker('worker.js?sqlite3.dir=jswasm', {
+      credentials: "same-origin" });
 
     /*
     console.log( "Adding sql-wasm.js script tag")
