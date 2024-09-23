@@ -19,6 +19,7 @@ export default function Home() {
   const workerRef = useRef();
 
   useEffect(() => {
+    /*
     const documentCE = document.createElement;
     document.createElement = (...args) => {
       const el = documentCE.apply(document, args);
@@ -27,7 +28,7 @@ export default function Home() {
       }
       return el;
     };
-
+    */
     const logHtml = function (cssClass, ...args) {
       const ln = document.createElement('div');
       if (cssClass) ln.classList.add(cssClass);
@@ -38,36 +39,6 @@ export default function Home() {
     const worker = new Worker('worker.js?sqlite3.dir=jswasm', {
       crossorigin: "anonymous" });
             
-
-    /*
-    console.log( "Adding sql-wasm.js script tag")
-    const s = document.createElement( 'script' );
-    s.setAttribute( 'src', '/worker.js?sqlite3.dir=jswasm' );
-    s.setAttribute( 'crossorigin', 'anonymous' );
-    document.body.appendChild( s );
-  
-    window.loadSQL = async () => {
-        console.log( "loadSQL function called" )
-  
-        return await initSqlJs({
-            locateFile: file => `/${file}`
-          })
-    }
-    */
-    //const worker = new Worker(new URL("worker.js?sqlite3.dir=jswasm", import.meta.url));
-    //const worker = new Worker('worker.js?sqlite3.dir=jswasm');
-
-    /*
-    const workerUrl = new URL(
-      '../public/worker.js?sqlite3.dir=jswasm',
-      import.meta.url,
-    ).toString();
-
-    const blob = new Blob([`importScripts('${JSON.stringify(workerUrl)}');`]);
-    const url = URL.createObjectURL(blob);
-    const worker = new Worker(workerUrl);
-    */
-
     workerRef.current = worker;
     workerRef.current.onmessage = function ({ data }) {
         switch (data.type) {
